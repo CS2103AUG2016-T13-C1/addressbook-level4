@@ -123,12 +123,18 @@ There is no need to save manually.
        
 ## Command Summary
 
-Command | Format  
--------- | :-------- 
-Add | `add NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...`
-Clear | `clear`
-Delete | `delete INDEX`
-Find | `find KEYWORD [MORE_KEYWORDS]`
-List | `list`
-Help | `help`
-Select | `select INDEX`
+Command | Format | Description 
+----------- | ---------------------------------------- | :--------- 
+Add | `add TASK_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` | Add a task
+SetDeadline | `setdeadline TASK_INDEX TIMELEFT` | Set a deadline
+SetEvent | `setevent TASK_INDEX EVENT_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME]` | Set an event
+Delete | `delete TASK_INDEX` | Delete a task
+Find | `find KEYWORD [MORE_KEYWORDS]` | Search for tasks
+Help | `help` | View help on command usage
+Edit | `edit TASK_INDEX` | Edit a task
+View | `view TASK_INDEX` | View details of a task
+List | `list` | List tasks due today
+ListAll | `listall` | List all tasks
+SetComplete | `setcomplete TASK_INDEX` | Set task as complete
+Undo | `undo` | Undo last command
+Store | `store FILE_LOCATION` | Specify storage location
