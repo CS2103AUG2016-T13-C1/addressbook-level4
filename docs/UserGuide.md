@@ -44,16 +44,20 @@ Format: `help`
 Adds a task to the task manager<br>
 Format: `add TASK_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` 
 
-> Task can include start and end date/time (optional).
+> Task name is required, but providing start/end dates are optional.
 
 Examples: 
 * `add do laundry sd/6-10-2016`
 * `add CS2103 project sd/1-10-2016 ed/14-11-2016`
 
 #### Set a deadline to a task : `setdeadline`
-Sets time left to the specified task from the task manager.<br>
+Sets the amount of time left or an end date to the specified task from the task manager.<br>
 Format: `setdeadline TASK_INDEX tl/TIMELEFT` or `setdeadline TASK_INDEX ed/END_DATE`
 
+> Sets a deadline to the task at the specified `TASK_INDEX`. 
+  The index refers to the index number shown in the most recent listing.<br>
+  The index **must be a positive integer** 1, 2, 3, ...
+  
 Examples: 
 * `list`<br>
   `setdeadline 2 tl/24`<br>
@@ -65,6 +69,10 @@ Examples:
 #### Set an event to a task : `setevent`
 Sets an event to the specified task from the task manager.<br>
 Format: `setevent TASK_INDEX EVENT_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME]`
+
+> Sets an event to the task at the specified `TASK_INDEX`. 
+  The index refers to the index number shown in the most recent listing.<br>
+  The index **must be a positive integer** 1, 2, 3, ...
 
 Examples: 
 * `list`<br>
@@ -78,6 +86,10 @@ Examples:
 Sets an event to the specified task from the task manager.<br>
 Format: `setcomplete TASK_INDEX`
 
+> Sets the task at the specified `TASK_INDEX` as complete. 
+  The index refers to the index number shown in the most recent listing.<br>
+  The index **must be a positive integer** 1, 2, 3, ...
+  
 Examples: 
 * `list`<br>
   `setcomplete 2`<br>
@@ -92,7 +104,7 @@ Shows a list of all tasks in the task manager.<br>
 Format: `listall`
 
 #### Deleting a task : `delete`
-Deletes the specified task from the task manager. Irreversible.<br>
+Deletes the specified task from the task manager.<br>
 Format: `delete TASK_INDEX`
 
 > Deletes the task at the specified `TASK_INDEX`. 
@@ -122,7 +134,7 @@ Examples:
 * `find CS2103`<br>
   Returns `CS2103` but not `cs2103`
 * `find assignment CS2103 CS2105`<br>
-  Returns Any task having names `assignment`, `CS2103`, or `CS2105`
+  Returns any task having names `assignment`, `CS2103`, or `CS2105`
 
 #### Editing a task : `edit`
 Edits the specified task from the task manager.<br>
@@ -141,7 +153,7 @@ Examples:
 Views details of the specified task from the task manager.<br>
 Format: `view TASK_INDEX`
 
-> Views the task at the specified `TASK_INDEX`. 
+> Views details of the task at the specified `TASK_INDEX`. 
   The index refers to the index number shown in the most recent listing.<br>
   The index **must be a positive integer** 1, 2, 3, ...
 
@@ -153,6 +165,10 @@ Examples:
 #### Undoing the last command : `undo`
 Undo the last command executed.<br>
 Format: `undo` 
+
+#### Clearing completed tasks : `undo`
+Clears all completed tasks from the task manager.<br>
+Format: `clear` 
 
 #### Specifying data storage location : `store`
 Specifies data storage location.<br>
@@ -190,5 +206,6 @@ Find | `find KEYWORD [MORE_KEYWORDS]` | Find all tasks containing any keywords
 Edit | `edit TASK_INDEX [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` | Edit a task
 View | `view TASK_INDEX` | View details of a task
 Undo | `undo` | Undo last command
+Clear | `clear` | Clear completed tasks
 Store | `store FILE_LOCATION` | Specify storage location
 Exit | `exit` | Exit program
