@@ -62,6 +62,18 @@ Examples:
   `setdeadline 1 ed/23-10-2016`<br>
   Set a deadline on 23rd October 2016 to the 1st task in the results of the `find` command.
 
+#### Set an event to a task : `setevent`
+Sets an event to the specified task from the task manager.<br>
+Format: `setevent TASK_INDEX EVENT_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME]`
+
+Examples: 
+* `list`<br>
+  `setevent 2 complete milestone 1 sd/1-10-2016 st/1400 ed/1-10-2016 et/1600`<br>
+  Set an event on 1st October 2016 starting from 1400 - 1600 to the 2nd task in the task manager.
+* `find CS2103`<br> 
+  `setevent 1 event roadshow sd/23-10-2016 ed/23-10-2016`<br>
+  Set a full day event on 23rd October 2016 to the 1st task in the results of the `find` command.
+
 #### Listing all tasks due today : `list`
 Shows a list of all tasks due today in the task manager.<br>
 Format: `list`
@@ -123,7 +135,7 @@ SetEvent | `setevent TASK_INDEX EVENT_NAME [sd/START_DATE] [st/START_TIME] [ed/E
 Delete | `delete TASK_INDEX` | Delete a task
 Find | `find KEYWORD [MORE_KEYWORDS]` | Find all tasks containing any keywords
 Help | `help` | View help on command usage
-Edit | `edit TASK_INDEX` | Edit a task
+Edit | `edit TASK_INDEX [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` | Edit a task
 View | `view TASK_INDEX` | View details of a task
 List | `list` | List tasks due today
 ListAll | `listall` | List all tasks
