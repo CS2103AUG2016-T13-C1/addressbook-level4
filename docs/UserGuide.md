@@ -11,7 +11,7 @@
    > Having any Java 8 version is not enough. <br>
    This app will not work with earlier versions of Java 8.
    
-1. Download the latest `addressbook.jar` from the [releases](../../../releases) tab.
+1. Download the latest `supertasker.jar` from the [releases](../../../releases) tab.
 2. Copy the file to the folder you want to use as the home folder for your Task Manager.
 3. Double-click the file to start the app. The GUI should appear in a few seconds. 
    > <img src="images/uiMockUp.jpg" width="600">
@@ -20,7 +20,7 @@
    e.g. typing **`help`** and pressing <kbd>Enter</kbd> will open the help window. 
 5. Some example commands you can try:
    * **`list`** : lists all tasks due today
-   * **`add`**` do laundry : 
+   * **`add`**` do laundry` : 
      adds a task named `do laundry` to the Task Manager.
    * **`delete`**` 3` : deletes the 3rd task shown in the current list
    * **`exit`** : exits the app
@@ -40,72 +40,68 @@ Format: `help`
 
 > Help is also shown if you enter an incorrect command e.g. `abcd`
  
-#### Adding a person: `add`
-Adds a person to the address book<br>
-Format: `add NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS [t/TAG]...` 
+#### Adding a task: `add`
+Adds a task to the task manager<br>
+Format: `add TASK_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` 
 
-> Persons can have any number of tags (including 0)
+> Task can include start and end date/time (optional).
 
 Examples: 
-* `add John Doe p/98765432 e/johnd@gmail.com a/John street, block 123, #01-01`
-* `add Betsy Crowe p/1234567 e/betsycrowe@gmail.com a/Newgate Prison t/criminal t/friend`
+* `add do laundry sd/6-10-2016`
+* `add CS2103 project sd/1-10-2016 ed/14-11-2016`
 
-#### Listing all persons : `list`
-Shows a list of all persons in the address book.<br>
+#### Set a deadline to a task : `setdeadline`
+Sets time left to the specified task from the task manager.<br>
+Format: `setdeadline TASK_INDEX tl/TIMELEFT` or `setdeadline TASK_INDEX ed/END_DATE`
+
+Examples: 
+* `list`<br>
+  `setdeadline 2 tl/24`<br>
+  Set a deadline with 24 hours left to the 2nd task in the task manager.
+* `find CS2103`<br> 
+  `setdeadline 1 ed/23-10-2016`<br>
+  Set a deadline on 23rd October 2016 to the 1st task in the results of the `find` command.
+
+#### Listing all tasks due today : `list`
+Shows a list of all tasks due today in the task manager.<br>
 Format: `list`
 
-#### Finding all persons containing any keyword in their name: `find`
-Finds persons whose names contain any of the given keywords.<br>
+#### Listing all tasks : `listall`
+Shows a list of all tasks in the task manager.<br>
+Format: `listall`
+
+#### Finding all tasks containing any keyword in their name: `find`
+Finds tasks whose names contain any of the given keywords.<br>
 Format: `find KEYWORD [MORE_KEYWORDS]`
 
-> * The search is case sensitive. e.g `hans` will not match `Hans`
-> * The order of the keywords does not matter. e.g. `Hans Bo` will match `Bo Hans`
+> * The search is case sensitive. e.g `complete` will not match `Complete`
+> * The order of the keywords does not matter. e.g. `write essay` will match `essay write`
 > * Only the name is searched.
-> * Only full words will be matched e.g. `Han` will not match `Hans`
-> * Persons matching at least one keyword will be returned (i.e. `OR` search).
-    e.g. `Hans` will match `Hans Bo`
+> * Only full words will be matched e.g. `assign` will not match `assignment`
+> * Tasks matching at least one keyword will be returned (i.e. `OR` search).
+    e.g. `write` will match `write essay`
 
 Examples: 
-* `find John`<br>
-  Returns `John Doe` but not `john`
-* `find Betsy Tim John`<br>
-  Returns Any person having names `Betsy`, `Tim`, or `John`
+* `find CS2103`<br>
+  Returns `CS2103` but not `cs2103`
+* `find assignment CS2103 CS2105`<br>
+  Returns Any task having names `assignment`, `CS2103`, or `CS2105`
 
-#### Deleting a person : `delete`
-Deletes the specified person from the address book. Irreversible.<br>
-Format: `delete INDEX`
+#### Deleting a task : `delete`
+Deletes the specified task from the task manager. Irreversible.<br>
+Format: `delete TASK_INDEX`
 
-> Deletes the person at the specified `INDEX`. 
+> Deletes the task at the specified `TASK_INDEX`. 
   The index refers to the index number shown in the most recent listing.<br>
   The index **must be a positive integer** 1, 2, 3, ...
 
 Examples: 
 * `list`<br>
   `delete 2`<br>
-  Deletes the 2nd person in the address book.
-* `find Betsy`<br> 
+  Deletes the 2nd task in the task manager.
+* `find CS2103`<br> 
   `delete 1`<br>
-  Deletes the 1st person in the results of the `find` command.
-
-#### Select a person : `select`
-Selects the person identified by the index number used in the last person listing.<br>
-Format: `select INDEX`
-
-> Selects the person and loads the Google search page the person at the specified `INDEX`. 
-  The index refers to the index number shown in the most recent listing.<br>
-  The index **must be a positive integer** 1, 2, 3, ...
-
-Examples: 
-* `list`<br>
-  `select 2`<br>
-  Selects the 2nd person in the address book.
-* `find Betsy` <br> 
-  `select 1`<br>
-  Selects the 1st person in the results of the `find` command.
-
-#### Clearing all entries : `clear`
-Clears all entries from the address book.<br>
-Format: `clear`  
+  Deletes the 1st task in the results of the `find` command.
 
 #### Exiting the program : `exit`
 Exits the program.<br>
@@ -122,10 +118,10 @@ There is no need to save manually.
 Command | Format | Description 
 ----------- | ------------------------------- | :--------- 
 Add | `add TASK_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME] [tl/TIMELEFT]` | Add a task
-SetDeadline | `setdeadline TASK_INDEX TIMELEFT` | Set a deadline
+SetDeadline | `setdeadline TASK_INDEX tl/TIMELEFT` or `setdeadline TASK_INDEX ed/END_DATE`| Set a deadline
 SetEvent | `setevent TASK_INDEX EVENT_NAME [sd/START_DATE] [st/START_TIME] [ed/END_DATE] [et/END_TIME]` | Set an event
 Delete | `delete TASK_INDEX` | Delete a task
-Find | `find KEYWORD [MORE_KEYWORDS]` | Search for tasks
+Find | `find KEYWORD [MORE_KEYWORDS]` | Find all tasks containing any keywords
 Help | `help` | View help on command usage
 Edit | `edit TASK_INDEX` | Edit a task
 View | `view TASK_INDEX` | View details of a task
