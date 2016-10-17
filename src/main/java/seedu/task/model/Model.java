@@ -28,9 +28,6 @@ public interface Model {
     /** Edits the given task */
     void editTask(ReadOnlyTask taskToEdit, Task taskEditedTo) throws TaskNotFoundException, DuplicateTaskException;
     
-    /** Undo last task */
-    void undo() throws TaskNotFoundException;
-    
     /** Completes the given task */
     void completeTask(ReadOnlyTask taskToComplete) throws TaskNotFoundException, TaskAlreadyCompletedException;
 

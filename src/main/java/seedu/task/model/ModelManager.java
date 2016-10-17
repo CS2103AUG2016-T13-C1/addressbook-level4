@@ -26,7 +26,6 @@ public class ModelManager extends ComponentManager implements Model {
 
     private final TaskBook taskBook;
     private final FilteredList<Task> filteredTasks;
-    private Task lastTask;
 
     /**
      * Initializes a ModelManager with the given TaskBook
@@ -85,11 +84,6 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListToShowAll();
         indicateTaskBookChanged();
     }
-    
-    @Override
-	public void undo() throws TaskNotFoundException {
-    	//TODO implement
-	}
 
 	@Override
     public void editTask(ReadOnlyTask target, Task taskEditedTo) throws TaskNotFoundException, DuplicateTaskException {
