@@ -28,6 +28,9 @@ public interface Model {
     /** Edits the given task */
     void editTask(ReadOnlyTask taskToEdit, Task taskEditedTo) throws TaskNotFoundException, DuplicateTaskException;
     
+    /** Undo last task */
+    void undo() throws TaskNotFoundException;
+    
     /** Completes the given task */
     void completeTask(ReadOnlyTask taskToComplete) throws TaskNotFoundException, TaskAlreadyCompletedException;
 
@@ -39,7 +42,4 @@ public interface Model {
 
     /** Updates the filter of the filtered task list to filter by the given keywords*/
     void updateFilteredTaskList(Set<String> keywords);
-
-    
-
 }

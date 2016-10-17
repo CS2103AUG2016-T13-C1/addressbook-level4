@@ -21,8 +21,8 @@ public class EditCommand extends Command {
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Edits the task identified by the index number used in the last task listing.\n"
             + "Parameters: INDEX (must be a positive integer) "
-            + "[-d END_DATETIME] [-e START_DATETIME END_DATETIME]\n"
-            + "Example: " + COMMAND_WORD + " 1" + " -d 12-10-2016";
+            + "[-d /eEND_DATETIME] [-e /sSTART_DATETIME /eEND_DATETIME]\n"
+            + "Example: " + COMMAND_WORD + " 1" + " -d /e12-10-2016";
 
     public static final String MESSAGE_EDIT_TASK_SUCCESS = "Edited task: %1$s";
     public static final String MESSAGE_EDIT_TASK_FAIL = "This task already exists in the task list";
@@ -97,5 +97,4 @@ public class EditCommand extends Command {
         }
         return taskEditedTo;
     }
-
 }

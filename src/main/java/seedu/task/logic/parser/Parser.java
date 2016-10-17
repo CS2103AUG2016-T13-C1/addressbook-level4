@@ -15,6 +15,9 @@ public abstract class Parser {
             Pattern.compile("(?<keywords>\\S+(?:\\s+\\S+)*)"); // one or more keywords separated by whitespace
 	static final Pattern TASK_INDEX_ARGS_FORMAT = Pattern.compile("(?<targetIndex>.+)");
 	
+	static final Pattern START_DATE_ARGS_FORMAT = Pattern.compile("(?<index>\\d+) (?<flag>-\\S) (?<arguments>.*)");
+	static final Pattern END_DATE_ARGS_FORMAT = Pattern.compile("(?<commandWord>\\S+)(?<arguments>.*)");
+	
 	/**
      * Parses the user input and returns the Command that the user executed.
      *
