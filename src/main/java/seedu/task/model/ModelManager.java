@@ -11,6 +11,7 @@ import seedu.task.model.task.ReadOnlyTask;
 import seedu.task.model.task.Task;
 import seedu.task.model.task.UniqueTaskList;
 import seedu.task.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.task.model.task.UniqueTaskList.NoCompletedTasksFoundException;
 import seedu.task.model.task.UniqueTaskList.TaskAlreadyCompletedException;
 import seedu.task.model.task.UniqueTaskList.TaskNotFoundException;
 
@@ -99,7 +100,7 @@ public class ModelManager extends ComponentManager implements Model {
     }
 	
 	@Override
-    public void clearCompletedTasks() {
+    public void clearCompletedTasks() throws NoCompletedTasksFoundException {
 	    taskBook.clearCompletedTasks();
         indicateTaskBookChanged();
     }

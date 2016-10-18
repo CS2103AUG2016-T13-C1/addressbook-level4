@@ -4,6 +4,7 @@ import seedu.task.commons.core.UnmodifiableObservableList;
 import seedu.task.model.task.ReadOnlyTask;
 import seedu.task.model.task.Task;
 import seedu.task.model.task.UniqueTaskList.DuplicateTaskException;
+import seedu.task.model.task.UniqueTaskList.NoCompletedTasksFoundException;
 import seedu.task.model.task.UniqueTaskList.TaskAlreadyCompletedException;
 import seedu.task.model.task.UniqueTaskList.TaskNotFoundException;
 
@@ -41,6 +42,6 @@ public interface Model {
     void updateFilteredTaskList(Set<String> keywords);
 
     /** Clears completed tasks from the task book */
-    void clearCompletedTasks();
+    void clearCompletedTasks() throws NoCompletedTasksFoundException;
 
 }

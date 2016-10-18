@@ -1,6 +1,7 @@
 package seedu.task.logic.commands;
 
 import seedu.task.model.TaskBook;
+import seedu.task.model.task.UniqueTaskList.NoCompletedTasksFoundException;
 
 /**
  * Clears completed tasks from the task book.
@@ -17,6 +18,7 @@ public class ClearCommand extends Command {
     
     public static final String MESSAGE_CLEAR_ALL_SUCCESS = "Task book has been cleared!";
     public static final String MESSAGE_CLEAR_COMPLETED_SUCCESS = "Completed tasks have been cleared!";
+    public static final String MESSAGE_CLEAR_COMPLETED_FAIL = "There are no completed tasks to be cleared!";
 
     private String option;
     
@@ -29,7 +31,11 @@ public class ClearCommand extends Command {
         assert model != null;
         
         if (option.isEmpty()) {
-            model.clearCompletedTasks();
+            try {
+                model.clearCompletedTasks();
+            } catch (NoCompletedTasksFoundException e) {
+                return new CommandResult(MESSAGE_CLEAR_COMPLETED_FAIL);
+            }
             return new CommandResult(MESSAGE_CLEAR_COMPLETED_SUCCESS);
         }
 
