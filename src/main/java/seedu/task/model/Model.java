@@ -38,8 +38,14 @@ public interface Model {
     /** Updates the filter of the filtered task list to show all tasks */
     void updateFilteredListToShowAll();
 
-    /** Updates the filter of the filtered task list to filter by the given keywords*/
+    /** Updates the filter of the filtered task list to filter by the given keywords */
     void updateFilteredTaskList(Set<String> keywords);
+    
+    /** 
+     * Updates the filter of the filtered task list to filter tasks by status
+     * @param status true = completed tasks, false = pending tasks 
+     */
+    void updateFilteredListByStatus(boolean status);
 
     /** Clears completed tasks from the task book */
     void clearCompletedTasks() throws NoCompletedTasksFoundException;

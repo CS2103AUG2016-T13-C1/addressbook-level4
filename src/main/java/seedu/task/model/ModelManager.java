@@ -8,6 +8,7 @@ import seedu.task.commons.events.model.TaskBookChangedEvent;
 import seedu.task.commons.events.ui.TaskPanelDataChangedEvent;
 import seedu.task.commons.util.StringUtil;
 import seedu.task.model.task.ReadOnlyTask;
+import seedu.task.model.task.Status;
 import seedu.task.model.task.Task;
 import seedu.task.model.task.UniqueTaskList;
 import seedu.task.model.task.UniqueTaskList.DuplicateTaskException;
@@ -121,6 +122,11 @@ public class ModelManager extends ComponentManager implements Model {
     public void updateFilteredTaskList(Set<String> keywords){
         updateFilteredTaskList(new PredicateExpression(new NameQualifier(keywords)));
     }
+    
+    @Override
+    public void updateFilteredListByStatus(boolean status) {
+        updateFilteredTaskList(new PredicateExpression(new StatusQualifier(status)));
+    }
 
     private void updateFilteredTaskList(Expression expression) {
         filteredTasks.setPredicate(expression::satisfies);
@@ -175,6 +181,34 @@ public class ModelManager extends ComponentManager implements Model {
         @Override
         public String toString() {
             return "name=" + String.join(", ", nameKeyWords);
+        }
+    }
+    
+    /**
+     * Class used to filter tasks by status
+     */
+    private class StatusQualifier implements Qualifier {
+        
+        private boolean status;
+        
+        StatusQualifier(boolean status) {
+            this.status = status;
+        }
+
+        @Override
+        public boolean run(ReadOnlyTask task) {
+            return task.getStatus().isComplete() == status;
+        }
+
+        @Override
+        public String toString() {
+            String taskStatus;
+            if (status) {
+                taskStatus = Status.STATUS_COMPLETE_STRING;
+            } else {
+                taskStatus = Status.STATUS_PENDING_STRING;
+            }
+            return "status=" + taskStatus;
         }
     }
 

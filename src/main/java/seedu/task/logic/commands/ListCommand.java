@@ -1,5 +1,6 @@
 package seedu.task.logic.commands;
 
+import seedu.task.model.task.Status;
 
 /**
  * Lists all tasks in the task book to the user.
@@ -42,10 +43,10 @@ public class ListCommand extends Command {
             model.updateFilteredListToShowAll();
             return new CommandResult(MESSAGE_LIST_ALL_SUCCESS);
         case OPTION_LIST_COMPLETE:
-
+            model.updateFilteredListByStatus(Status.STATUS_COMPLETE);
             return new CommandResult(MESSAGE_LIST_COMPLETE_SUCCESS);
         case OPTION_LIST_PENDING:
-
+            model.updateFilteredListByStatus(Status.STATUS_PENDING);
             return new CommandResult(MESSAGE_LIST_PENDING_SUCCESS);
         default:
             assert false : "Parser should have eliminated invalid options";
