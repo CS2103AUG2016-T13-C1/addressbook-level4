@@ -97,6 +97,12 @@ public class ModelManager extends ComponentManager implements Model {
         indicateTaskBookChanged();
         indicateTaskListPanelDataChanged();
     }
+	
+	@Override
+    public void clearCompletedTasks() {
+	    taskBook.clearCompletedTasks();
+        indicateTaskBookChanged();
+    }
 
     //=========== Filtered Task List Accessors ===============================================================
 

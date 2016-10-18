@@ -181,6 +181,22 @@ public class TaskBook implements ReadOnlyTaskBook {
         }
         taskToComplete.setComplete();
     }
+    
+    /**
+     * Clears completed tasks from the task book
+     */
+    public void clearCompletedTasks() {
+        UniqueTaskList copyTasks = copyUniqueTaskList(tasks);
+        for (Task readTask : copyTasks) {
+            if (readTask.isComplete()) {
+                try {
+                    tasks.remove(readTask);
+                } catch (TaskNotFoundException e) {
+                    assert false : "The target task cannot be missing";
+                }
+            }
+        }
+    }
 
 //// tag-level operations
 
@@ -229,5 +245,5 @@ public class TaskBook implements ReadOnlyTaskBook {
         // use this method for custom fields hashing instead of implementing your own
         return Objects.hash(tasks, tags);
     }
-    
+
 }
