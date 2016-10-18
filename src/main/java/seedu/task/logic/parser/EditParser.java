@@ -18,11 +18,9 @@ import seedu.task.model.task.TaskDate;
  * Parser class used to parse an edit command
  */
 public class EditParser extends Parser{
-	private final String DEADLINE_FLAG = "-d";
-	private final String EVENT_FLAG = "-e";
-	private final Pattern EDIT_ARGS_FORMAT = Pattern.compile("\\s*(?<index>\\d+)\\s*(?<flag>-\\S)\\s*(?<arguments>.*)\\s*");
-	private final Pattern DEADLINE_ARG_FORMAT = Pattern.compile("\\s*/e(?<endDate>\\d{2}-\\d{2}-\\d{4})\\s*");
-	private final Pattern EVENT_ARG_FORMAT = Pattern.compile("\\s*/s(?<startDate>\\d{2}-\\d{2}-\\d{4})\\s*/e(?<endDate>\\d{2}-\\d{2}-\\d{4})\\s*");
+	private final Pattern FLOATING_ARGS_FORMAT = Pattern.compile("\\s*(?<index>\\d+)\\s*(?<name>\\w+)\\s*");
+	private final Pattern DEADLINE_ARGS_FORMAT = Pattern.compile("\\s*(?<index>\\d+)\\s*(?<endDate>\\d{2}-\\d{2}-\\d{4})\\s*");
+	private final Pattern EVENT_ARGS_FORMAT = Pattern.compile("\\s*(?<index>\\d+)\\s*(?<startDate>\\d{2}-\\d{2}-\\d{4})\\s*(?<endDate>\\d{2}-\\d{2}-\\d{4})\\s*");
 	
 	/**
      * Parses arguments in the context of the edit task command.
@@ -31,32 +29,20 @@ public class EditParser extends Parser{
      */
 	@Override
 	public Command parseCommand(String args) {
-		final Matcher matcher = EDIT_ARGS_FORMAT.matcher(args);
-		if (!matcher.matches()) {
-			return new IncorrectCommand(
-                    String.format(MESSAGE_INVALID_COMMAND_FORMAT, 
-                    		EditCommand.MESSAGE_USAGE));
-		}
+		Command toReturn = null;
+		boolean hasException = false;
 		
-		String indexArg = matcher.group("index").trim();
-		String flagArg = matcher.group("flag").trim();
-		String arguments = matcher.group("arguments").trim();
-		
-        Command toReturn = null;
-        boolean hasException = false;
-        
-        try {
-        	final int index = tryParseIndex(indexArg);
-        	
-        	if (isDeadlineFlag(flagArg)) {
-        		toReturn = createDeadlineTask(index, arguments);
-        	} else if (isEventFlag(flagArg)) {
-        		toReturn = createEventTask(index, arguments);
-        	} else {
-        		throw new IllegalArgumentException();
-        	}
-        	
-        } catch (NullPointerException e) {
+		try {
+			if (isDeadlineCommand(args)) {
+				toReturn = createDeadlineTask(args);
+			} else if (isEventCommand(args)) {
+				toReturn = createEventTask(args);
+			} else if (isFloatingCommand(args)) {
+				toReturn = createFloatingTask(args);
+			} else {
+				throw new IllegalArgumentException();
+			}
+		} catch (NullPointerException e) {
         	hasException = true;
         } catch (ParseException e) {
         	hasException = true;
@@ -65,14 +51,14 @@ public class EditParser extends Parser{
         } catch (IllegalArgumentException e) {
         	hasException = true;
         }
-        
-        if (hasException) {
+		
+		if (hasException) {
         	toReturn = new IncorrectCommand(
                     String.format(MESSAGE_INVALID_COMMAND_FORMAT, 
                     		EditCommand.MESSAGE_USAGE));
         }
-        
-        return toReturn;
+		
+		return toReturn;
     }
 	
 	/**
@@ -91,49 +77,85 @@ public class EditParser extends Parser{
         return index.get();
 	}
 	
-	private boolean isDeadlineFlag(String arg) throws NullPointerException {
-		return arg.equals(DEADLINE_FLAG);
+	private boolean isDeadlineCommand(String args) throws NullPointerException {
+		final Matcher matcher = DEADLINE_ARGS_FORMAT.matcher(args);
+		return matcher.matches();
 	}
 	
-	private boolean isEventFlag(String arg) throws NullPointerException {
-		return arg.equals(EVENT_FLAG);
+	private boolean isEventCommand(String args) throws NullPointerException {
+		final Matcher matcher = EVENT_ARGS_FORMAT.matcher(args);
+		return matcher.matches();
+	}
+	
+	private boolean isFloatingCommand(String args) throws NullPointerException {
+		final Matcher matcher = FLOATING_ARGS_FORMAT.matcher(args);
+		return matcher.matches();
 	}
 	
 	/**
 	 * Creates a DeadlineTask given a list of arguments expects args to have the form
-	 * "/e00-00-0000"
+	 * "[INDEX] 00-00-0000"
 	 * 
 	 * @throws ParseException 
 	 * @throws IllegalArgumentException
 	 */
-	private Command createDeadlineTask(int index, String args) throws IllegalArgumentException, ParseException {
-		Matcher dateMatcher = DEADLINE_ARG_FORMAT.matcher(args);
+	private Command createDeadlineTask(String args) throws IllegalArgumentException, ParseException {
+		Matcher matcher = DEADLINE_ARGS_FORMAT.matcher(args);
 		
-		if (!dateMatcher.matches()) {
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException();
 		}
 		
-		String endDateTime = dateMatcher.group("endDate");
-        Date endDate = DateUtil.parseStringToDate(endDateTime);
+		String indexString = matcher.group("index").trim();
+		String endDateString = matcher.group("endDate").trim();
+		
+		int index = tryParseIndex(indexString);
+        Date endDate = DateUtil.parseStringToDate(endDateString);
         return new EditCommand(index, new TaskDate(endDate));
 	}
 	
 	/**
-	 * Creates an EventTask given a list of arguments
+	 * Creates an EventTask given a string argument that has the form
+	 * "[INDEX] 00-00-0000 00-00-0000"
+	 * 
 	 * @throws ParseException
 	 * @throws IllegalArgumentException 
 	 */
-	private Command createEventTask(int index, String args) throws ParseException, IllegalArgumentException {
-		Matcher dateMatcher = EVENT_ARG_FORMAT.matcher(args);
+	private Command createEventTask(String args) throws ParseException, IllegalArgumentException {
+		Matcher matcher = EVENT_ARGS_FORMAT.matcher(args);
 		
-		if (!dateMatcher.matches()) {
+		if (!matcher.matches()) {
 			throw new IllegalArgumentException();
 		}
 		
-		String startDateTime = dateMatcher.group("startDate");
-        String endDateTime = dateMatcher.group("endDate");
-        Date startDate = DateUtil.parseStringToDate(startDateTime);
-        Date endDate = DateUtil.parseStringToDate(endDateTime);
+		String indexString = matcher.group("index").trim();
+		String startDateString = matcher.group("startDate").trim();
+		String endDateString = matcher.group("endDate").trim();
+		
+		int index = tryParseIndex(indexString);
+		Date startDate = DateUtil.parseStringToDate(startDateString);
+        Date endDate = DateUtil.parseStringToDate(endDateString);
         return new EditCommand(index, new TaskDate(startDate), new TaskDate(endDate));
+	}
+	
+	/**
+	 * Creates a Task given an index and a name
+	 * "[INDEX] thisisanewname"
+	 * 
+	 * @throws ParseException 
+	 * @throws IllegalArgumentException
+	 */
+	private Command createFloatingTask(String args) throws IllegalArgumentException, ParseException {
+		Matcher matcher = FLOATING_ARGS_FORMAT.matcher(args);
+		
+		if (!matcher.matches()) {
+			throw new IllegalArgumentException();
+		}
+		
+		String indexString = matcher.group("index").trim();
+		String name = matcher.group("name").trim();
+		
+		int index = tryParseIndex(indexString);
+        return new EditCommand(index, name);
 	}
 }
