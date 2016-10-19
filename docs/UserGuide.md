@@ -144,19 +144,6 @@ Examples:
   `edit 2 e/23-10-2016`<br>
   Edit the 2nd task in the task manager into a deadline 23rd October 2016.
   
-#### Viewing a task : `view`
-Views details of the specified task from the task manager.<br>
-Format: `view TASK_INDEX`
-
-> Views details of the task at the specified `TASK_INDEX`.<br>
-  The index refers to the index number shown in the most recent listing.<br>
-  The index **must be a positive integer** 1, 2, 3, ...
-
-Examples: 
-* `list`<br>
-  `view 2`<br>
-  Displays details of the 2nd task in the task manager.
-
 #### Undoing the last command : `undo`
 Undo the last command executed.<br>
 Format: `undo`
