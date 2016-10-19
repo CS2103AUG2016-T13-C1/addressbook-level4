@@ -336,9 +336,10 @@ Use case ends.
 
 **MSS**
 
-1. User requests to delete a task.
-2. User types `delete TASK_INDEX`
-3. User is notified that the task was deleted<br>
+1. The user requests to list tasks or find a specific task
+2. System displays list of tasks.
+3. User requests to delete one of there tasks.
+4. User is notified that the task was deleted<br>
 Use case ends.
 
 **Extensions**
@@ -352,32 +353,32 @@ Use case ends.
 **MSS**
 
 1. User requests to find a task.
-2. User types `find KEYWORD [MORE KEYWORDS]`
-3. We display a list of tasks that match given keywords<br>
+2. We display a list of tasks that match given keywords<br>
 Use case ends.
 
 **Extensions**
 
-2a. No match found
+1a. No match found
 
-> 2a1. We notify the user that there was no match found
+> 1a1. We notify the user that there was no match found
 
 #### Use case: Edit
 
 **MSS**
 
-1. User requests to edit a task.
-2. User types `edit TASK_INDEX`
-3. We display the task with the given TASK_INDEX 
+1. User requests to list tasks
+2. System lists all tasks
+3. User requests to edit one of these tasks
+4. System display the requested task
 4. We copy the task in the prompt
 5. The user is allowed to modify it<br>
 Use case ends.
 
 **Extensions**
 
-2a. The task doesn’t exist
+3a. The task doesn’t exist
 
-> 2a1. The user is notified that the task was not found
+> 3a1. The user is notified that the task was not found
 
 #### Use case: List
 
@@ -408,23 +409,23 @@ Use case ends.
 **MSS**
 
 1. User requests to list a task.
-2. User types `undo`
-3. User is notified that the last command was undone and we display which command was undone<br>
+2. System displays this task
+3. User reuests to undo the previous command
+4. User is notified that the last command was undone and we display which command was undone<br>
 Use case ends.
 
 **Extensions**
 
-2a. There is no command to undo
+3a. There is no command to undo
 
-> 2a1. The user is notified that there is no command to undo
+> 3a1. The user is notified that there is no command to undo
 
 #### Use case: Help
 
 **MSS**
 
 1. User requests for help.
-2. User types `help`
-3. Helpful information is then displayed <br>
+2. Helpful information is then displayed <br>
 Use case ends.
 
 **Extensions**
@@ -435,20 +436,19 @@ Use case ends.
 
 **MSS**
 
-1. User requests to chnage the storage location.
-2. User types `store FILE_LOCATION`
-3. User is notified of the storage location specified has been set.<br>
+1. User requests to change the storage location.
+2. User is notified of the storage location specified has been set.<br>
 Use case ends.
 
 **Extensions**
 
-2a. Storage location does not exist
+1a. Storage location does not exist
 
-> 2a1. The user is notified that the the storage location does not exist.
+> 1a1. The user is notified that the the storage location does not exist.
 
-2b. Storage Location does not have enough space
+1b. Storage Location does not have enough space
 
-> 2b1. The user is notified that the disk specified is full.
+> 1b1. The user is notified that the disk specified is full.
 
 ## Appendix C : Non Functional Requirements
 

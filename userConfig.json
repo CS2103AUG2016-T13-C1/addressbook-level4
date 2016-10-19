@@ -1,0 +1,7 @@
+{
+  "appTitle" : "Super Tasker",
+  "logLevel" : "INFO",
+  "userPrefsFilePath" : "preferences.json",
+  "taskBookFilePath" : "/Users/WSH/Desktop/taskbook.xml",
+  "taskBookName" : "MyTaskBook"
+}
