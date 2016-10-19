@@ -108,9 +108,9 @@ The sections below give more details of each component.
 
 <img src="images/UiClassDiagram.png" width="800"><br>
 
-**API** : [`Ui.java`](../src/main/java/seedu/address/ui/Ui.java)
+**API** : [`Ui.java`](../src/main/java/seedu/task/ui/Ui.java)
 
-The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`,
+The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `TaskListPanel`,
 `StatusBarFooter`, `BrowserPanel` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class
 and they can be loaded using the `UiPartLoader`.
 
@@ -132,7 +132,7 @@ The `UI` component,
 
 1. `Logic` uses the `Parser` class to parse the user command.
 2. This results in a `Command` object which is executed by the `LogicManager`.
-3. The command execution can affect the `Model` (e.g. adding a person) and/or raise events.
+3. The command execution can affect the `Model` (e.g. adding a task) and/or raise events.
 4. The result of the command execution is encapsulated as a `CommandResult` object which is passed back to the `Ui`.
 
 Given below is the Sequence Diagram for interactions within the `Logic` component for the `execute("delete 1")`
@@ -147,8 +147,8 @@ Given below is the Sequence Diagram for interactions within the `Logic` componen
 
 The `Model`,
 * stores a `UserPref` object that represents the user's preferences.
-* stores the Address Book data.
-* exposes a `UnmodifiableObservableList<ReadOnlyPerson>` that can be 'observed' e.g. the UI can be bound to this list
+* stores the SuperTasker data.
+* exposes a `UnmodifiableObservableList<ReadOnlyTask>` that can be 'observed' e.g. the UI can be bound to this list
   so that the UI automatically updates when the data in the list change.
 * does not depend on any of the other three components.
 
@@ -213,13 +213,13 @@ We have two types of tests:
   
 2. **Non-GUI Tests** - These are tests not involving the GUI. They include,
    1. _Unit tests_ targeting the lowest level methods/classes. <br>
-      e.g. `seedu.address.commons.UrlUtilTest`
+      e.g. `seedu.task.commons.UrlUtilTest`
    2. _Integration tests_ that are checking the integration of multiple code units 
      (those code units are assumed to be working).<br>
-      e.g. `seedu.address.storage.StorageManagerTest`
+      e.g. `seedu.task.storage.StorageManagerTest`
    3. Hybrids of unit and integration tests. These test are checking multiple code units as well as 
       how the are connected together.<br>
-      e.g. `seedu.address.logic.LogicManagerTest`
+      e.g. `seedu.task.logic.LogicManagerTest`
   
 **Headless GUI Testing** :
 Thanks to the [TestFX](https://github.com/TestFX/TestFX) library we use,
@@ -269,7 +269,6 @@ b. Require developers to download those libraries manually (this creates extra w
 
 Priorities: High (must have) - `* * *`, Medium (nice to have)  - `* *`,  Low (unlikely to have) - `*`
 
-
 Priority | As a ... | I want to ... | So that I can...
 -------- | :-------- | :--------- | :-----------
 `* * *` | new user | see usage instructions | refer to instructions when I forget how to use the App
@@ -294,7 +293,7 @@ Priority | As a ... | I want to ... | So that I can...
 
 (For all use cases below, the **System** is the `TaskManager` and the **Actor** is the `user`, unless specified otherwise)
 
-#### Use case: Add Task
+#### Use case: Add task
 
 **MSS**
 
@@ -312,11 +311,11 @@ Use case ends.
 
 > 2b1. System notifies user that the command entered is invalid and correct usage of the command.
 
-#### Use case: Complete
+#### Use case: Complete task
 
 **MSS**
 
-1. User requests to list tasks.
+1. User requests to list tasks or find tasks.
 2. System displays list of tasks.
 3. User requests to set a task in the list as complete.
 4. System notifies user that the task is set as complete successfully.
@@ -324,68 +323,74 @@ Use case ends.
 
 **Extensions**
 
-2a. Task was already set as complete.
+3a. Task was already set as complete.
 
-> 2a1. System notifies user that the task was already set as complete.
+> 3a1. System notifies user that the task was already set as complete.
 
-2b. Specified task index is invalid
+3b. Specified task index is invalid
 
-> 2b1. System notifies user that the task index provided is invalid.
+> 3b1. System notifies user that the task index provided is invalid.
 
-#### Use case: Delete
+#### Use case: Delete task
 
 **MSS**
 
-1. The user requests to list tasks or find a specific task
+1. User requests to list tasks or find tasks.
 2. System displays list of tasks.
-3. User requests to delete one of there tasks.
-4. User is notified that the task was deleted<br>
+3. User requests to delete a task in the list.
+4. System notifies user that the task was deleted.<br>
 Use case ends.
 
 **Extensions**
 
-2a. The task doesn't exist
+3a. Task does not exist
 
-> 2a1.The user is notified that the task was not found
+> 3a1. System notifies user that the task was not found.
 
-#### Use case: Find
+3b. Specified task index is invalid
+
+> 3b1. System notifies user that the task index provided is invalid.
+
+#### Use case: Find tasks
 
 **MSS**
 
 1. User requests to find a task.
-2. We display a list of tasks that match given keywords<br>
+2. System displays a list of tasks that match given keywords.<br>
 Use case ends.
 
 **Extensions**
 
 1a. No match found
 
-> 1a1. We notify the user that there was no match found
+> 1a1. System displays an empty list.
 
-#### Use case: Edit
+#### Use case: Edit task
 
 **MSS**
 
-1. User requests to list tasks
-2. System lists all tasks
-3. User requests to edit one of these tasks
-4. System display the requested task
-4. We copy the task in the prompt
-5. The user is allowed to modify it<br>
+1. User requests to list tasks or find tasks.
+2. System displays list of tasks.
+3. User requests to edit a task in the list.
+4. System updates the displayed list.<br>
 Use case ends.
 
 **Extensions**
 
-3a. The task doesn’t exist
+3a. Task does not exist
 
-> 3a1. The user is notified that the task was not found
+> 3a1. System notifies user that the task was not found.
 
-#### Use case: List
+3b. Specified task index is invalid
+
+> 3b1. System notifies user that the task index provided is invalid.
+
+#### Use case: List tasks
 
 **MSS**
 
 1. User requests to list tasks due today.
-2. System displays list of tasks due today.
+2. System displays list of tasks due today.<br>
 Use case ends.
 
 1a. User requests to list all tasks.
@@ -404,51 +409,34 @@ Use case ends.
 
 > 2a1. System displays an empty list.
 
-#### Use case: Undo
+#### Use case: Undo previous commands
 
 **MSS**
 
-1. User requests to list a task.
-2. System displays this task
-3. User reuests to undo the previous command
-4. User is notified that the last command was undone and we display which command was undone<br>
+1. User requests to undo the previous command.
+2. System notifies user that the command was undone.<br>
 Use case ends.
 
 **Extensions**
 
-3a. There is no command to undo
+1a. There is no command to undo
 
-> 3a1. The user is notified that there is no command to undo
+> 1a1. The user is notified that there is no command to undo
 
-#### Use case: Help
-
-**MSS**
-
-1. User requests for help.
-2. Helpful information is then displayed <br>
-Use case ends.
-
-**Extensions**
-
-Use case ends.
-
-#### Use case: Store
+#### Use case: Change storage location
 
 **MSS**
 
 1. User requests to change the storage location.
-2. User is notified of the storage location specified has been set.<br>
+2. System notifies user that the storage location has been changed.<br>
 Use case ends.
 
 **Extensions**
 
 1a. Storage location does not exist
 
-> 1a1. The user is notified that the the storage location does not exist.
+> 1a1. System notifies user that the the storage location does not exist.
 
-1b. Storage Location does not have enough space
-
-> 1b1. The user is notified that the disk specified is full.
 
 ## Appendix C : Non Functional Requirements
 
