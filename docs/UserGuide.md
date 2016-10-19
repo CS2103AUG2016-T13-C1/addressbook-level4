@@ -188,12 +188,12 @@ There is no need to save manually.
 Command | Format | Description 
 ----------- | ------------------------------- | :--------- 
 Help | `help` | View help on command usage
-Add | `add TASK_NAME [-d e/END_DATETIME] [-e s/START_DATETIME e/END_DATETIME]` | Add a task
+Add | `add TASK_NAME [s/START_DATETIME] [e/END_DATETIME]` | Add a task
 Complete | `complete TASK_INDEX` | Set task as complete
 List | `list` | List tasks due today
 Delete | `delete TASK_INDEX` | Delete a task
 Find | `find KEYWORD [MORE_KEYWORDS] [s/START_DATETIME] [e/END_DATETIME]` | Find all tasks containing any keywords
-Edit | `edit TASK_INDEX [-d e/END_DATETIME] [-e [s/START_DATETIME] e/END_DATETIME] [-e s/START_DATETIME [e/END_DATETIME]]` | Edit a task
+Edit | `edit TASK_INDEX [e/END_DATETIME] [s/START_DATETIME] [NEW_NAME]` | Edit a task
 View | `view TASK_INDEX` | View details of a task
 Undo | `undo` | Undo last command
 Clear | `clear` | Clear completed tasks
