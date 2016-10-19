@@ -51,24 +51,20 @@ Format: `help`
  
 #### Adding a task : `add`
 Adds a task to the task manager.<br>
-Format: `add TASK_NAME [-d e/END_DATETIME] [-e s/START_DATETIME e/END_DATETIME]` 
+Format: `add TASK_NAME [s/START_DATETIME] [e/END_DATETIME]` 
 
 > To add a floating task, user is required to provide `TASK_NAME` only.<br>
   To add a deadline, user is required to provide `END_DATETIME` in addition to `TASK_NAME`.<br>
   To add an event, user is required to provide `START_DATETIME` and `END_DATETIME` in addition to `TASK_NAME`.<br>
-  The optional parameters for this command are mutually exclusive.
-  For example, if `-d` is specified, then the task is a deadline. Thus it is invalid to specify `-e` to make it an event.<br>
   Date/Time parameters can be entered in a more flexible way, e.g. `16 Nov`, `6pm`.
 
 Examples: 
 * `add follow up with Jack on sales report`<br>
   Adds a floating task named `follow up with Jack on sales report`.
-* `add assignment 3 -d e/12 Oct`<br>
+* `add assignment 3 e/12 Oct`<br>
   Adds a deadline named `assignment 3` due on 12th October 2016.
-* `add project Highlight -e s/1-10-2016 e/14-11-2016`<br>
+* `add project Highlight s/1-10-2016 e/14-11-2016`<br>
   Adds an event named `project Highlight` starting on 1st October 2016 to 14th November 2016.
-* `add driving test -d e/16 Nov -e s/10 Oct e/16 Nov`<br>
-  This is an invalid command, as a task cannot be both a deadline and an event.
   
 #### Set task as complete : `complete`
 Sets the specified task as complete.<br>
