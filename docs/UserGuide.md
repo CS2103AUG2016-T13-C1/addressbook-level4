@@ -128,19 +128,20 @@ Examples:
   
 #### Editing a task : `edit`
 Edits the specified task from the task manager.<br>
-Format: `edit TASK_INDEX [-d e/END_DATETIME] [-e [s/START_DATETIME] e/END_DATETIME] [-e s/START_DATETIME [e/END_DATETIME]]`
+Format: `edit TASK_INDEX [e/END_DATETIME] [s/START_DATETIME] [NEW_NAME]`
 
 > Edits the task at the specified `TASK_INDEX`.<br>
   The index refers to the index number shown in the most recent listing.<br>
   The index **must be a positive integer** 1, 2, 3, ...<br>
   Specified parameters will overwrite previous data.<br>
-  User can specify `END_DATETIME` along with `-d` to turn the task into a deadline.<br>
-  User can specify `START_DATETIME` or/both `END_DATETIME` to turn the task into an event.<br>
+  User can specify `END_DATETIME` along with to turn the task into a deadline.<br>
+  User can specifies both `START_DATETIME` and `END_DATETIME` to turn the task into an event.<br>
+  User can specify a new task name to turn current task into a floating task.<br>
   Date/Time parameters can be entered in a more flexible way, e.g. `16 Nov`, `6pm`.
 
 Examples: 
 * `list`<br>
-  `edit 2 -d e/23-10-2016`<br>
+  `edit 2 e/23-10-2016`<br>
   Edit the 2nd task in the task manager into a deadline 23rd October 2016.
   
 #### Viewing a task : `view`
