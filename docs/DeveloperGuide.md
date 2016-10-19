@@ -298,33 +298,39 @@ Priority | As a ... | I want to ... | So that I can...
 
 **MSS**
 
-1. User requests to add a task
-2. User types `add TASK_NAME [START_TIME] [END_TIME] [TIMELEFT]`
-3. User is notified that the task got added<br>
+1. User requests to add a task.
+2. System notifies user that the task is added successfully and displays the newly added task.<br>
 Use case ends.
 
 **Extensions**
 
 2a. Task already exists
 
-> 2a1. The user is notified that the task already exists
+> 2a1. System displays feedback that the task already exists.
 
-#### Use case: SetComplete
+2b. Invalid command format entered
+
+> 2b1. System notifies user that the command entered is invalid and correct usage of the command.
+
+#### Use case: Complete
 
 **MSS**
 
-1. User requests to set a task as completed
-2. User types `setcomplete TASK_INDEX`
-3. User is notified that the task was marked as completed<br>
+1. User requests to list tasks.
+2. System displays list of tasks.
+3. User requests to set a task in the list as complete.
+4. System notifies user that the task is set as complete successfully.
 Use case ends.
 
 **Extensions**
 
-2a. The task was already completed
-2b. The task doesn't exist
+2a. Task was already set as complete.
 
-> 2a1.The user is notified that the task was already completed
-> 2b1.The user is notified that the task was not found
+> 2a1. System notifies user that the task was already set as complete.
+
+2b. Specified task index is invalid
+
+> 2b1. System notifies user that the task index provided is invalid.
 
 #### Use case: Delete
 
@@ -373,35 +379,29 @@ Use case ends.
 
 > 2a1. The user is notified that the task was not found
 
-#### Use case: View
-
-**MSS**
-
-1. User requests to view a task.
-2. User types `view TASK_INDEX`
-3. We display the task with the given TASK_INDEX <br>
-Use case ends.
-
-**Extensions**
-
-2a. The task doesn’t exist
-
-> 2a1. The user is notified that the task was not found
-
 #### Use case: List
 
 **MSS**
 
-1. User requests to list a task.
-2. User types `list`
-3. We display the tasks available for today<br>
+1. User requests to list tasks due today.
+2. System displays list of tasks due today.
 Use case ends.
 
-**Extensions**
+1a. User requests to list all tasks.
 
-2a. There are no tasks for today
+> 1a1. System displays list of all tasks.
 
-> 2a1. The user is notified that there are no available tasks for today
+1b. User requests to list completed tasks.
+
+> 1b1. System displays list of completed tasks.
+
+1c. User requests to list pending tasks.
+
+> 1c1. System displays list of pending tasks.
+
+2a. No tasks found
+
+> 2a1. System displays an empty list.
 
 #### Use case: Undo
 
