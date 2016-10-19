@@ -128,7 +128,7 @@ Examples:
   
 #### Editing a task : `edit`
 Edits the specified task from the task manager.<br>
-Format: `edit TASK_INDEX [e/END_DATETIME] [s/START_DATETIME] [NEW_NAME]`
+Format: `edit TASK_INDEX [s/START_DATETIME] [e/END_DATETIME] [NEW_NAME]`
 
 > Edits the task at the specified `TASK_INDEX`.<br>
   The index refers to the index number shown in the most recent listing.<br>
@@ -193,7 +193,7 @@ Complete | `complete TASK_INDEX` | Set task as complete
 List | `list` | List tasks due today
 Delete | `delete TASK_INDEX` | Delete a task
 Find | `find KEYWORD [MORE_KEYWORDS] [s/START_DATETIME] [e/END_DATETIME]` | Find all tasks containing any keywords
-Edit | `edit TASK_INDEX [e/END_DATETIME] [s/START_DATETIME] [NEW_NAME]` | Edit a task
+Edit | `edit TASK_INDEX [s/START_DATETIME] [e/END_DATETIME] [NEW_NAME]` | Edit a task
 View | `view TASK_INDEX` | View details of a task
 Undo | `undo` | Undo last command
 Clear | `clear` | Clear completed tasks
