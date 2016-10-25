@@ -25,7 +25,7 @@ We are a team based in the [School of Computing, National University of Singapor
 * Aspects/tools in charge of: 
 * Features implemented:
    * [Change storage location](https://github.com/CS2103AUG2016-T13-C1/main/blob/master/docs/UserGuide.md#specifying-data-storage-location--store)
-   * [Calendar view that displays tasks on selected dates]
+   * Calendar view that displays tasks on selected dates
 * Code written: [[functional code](A123456.md)][[test code](A123456.md)][[docs](A123456.md)]
 * Other major contributions:
   * 
