@@ -154,7 +154,7 @@ The `Model`,
 
 ### Storage component
 
-<img src="images/StorageComponentDiagram.png" width="800"><br>
+<img src="images/StorageClassDiagram.png" width="800"><br>
 
 **API** : [`Storage.java`](../src/main/java/seedu/task/storage/Storage.java)
 
