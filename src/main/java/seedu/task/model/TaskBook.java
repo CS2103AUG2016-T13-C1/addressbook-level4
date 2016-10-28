@@ -144,35 +144,13 @@ public class TaskBook implements ReadOnlyTaskBook {
 	}
 
 	/**
-	 * Adds a task to the task list at a given index. Also checks the new task's
-	 * tags and updates {@link #tags} with any new tags found, and updates the
-	 * Tag objects in the task to point to those in {@link #tags}.
+	 * Adds a task to the task list at a given index.
 	 *
 	 * @throws UniqueTaskList.DuplicateTaskException
 	 *             if an equivalent task already exists.
 	 */
-	public void addTask(int taskIndex, Task task, String callingCommand) throws UniqueTaskList.DuplicateTaskException {
+	public void addTask(int taskIndex, Task task) throws UniqueTaskList.DuplicateTaskException {
 		tasks.add(taskIndex, task);
-		int targetIndex = -1;
-
-		//adding tasks may either be simply adding, or the add portion of an edit task
-		//this handles the proper actions for the undo stacks
-		if(callingCommand.equals("edit add")){
-			try {
-				
-				targetIndex = tasks.getIndex(task);
-				System.out.println("add task key " + task.toString());
-				System.out.println("add task target Index " + targetIndex);
-				System.out.println("add task calling command " + callingCommand);
-				undoTaskStack.pushDeleteToUndoStack(task, callingCommand, targetIndex);
-			} catch (TaskNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-		else{
-			undoTaskStack.pushAddToUndoStack(callingCommand, task, targetIndex);
-		}
-		System.out.println("after adding tasks, tasks is " + tasks.getInternalList().toString());
 	}
 
 	/**
@@ -201,13 +179,26 @@ public class TaskBook implements ReadOnlyTaskBook {
 		int targetIndex = tasks.getIndex(key);
 
 		if (tasks.remove(key)) {
-			System.out.println("remove task key " + key.toString());
-			System.out.println("remove task target Index " + targetIndex);
-			System.out.println("remove task calling command " + callingCommand);
 			undoTaskStack.pushDeleteToUndoStack(key, callingCommand, targetIndex);
 			return true;
 		} else {
 			throw new TaskNotFoundException();
+		}
+	}
+	
+	/**
+	 * Edits a task to the task at a given index. 
+	 *
+	 * @throws UniqueTaskList.DuplicateTaskException
+	 *             if an equivalent task already exists.
+	 */
+	public void editTask(int taskIndex, Task taskToEdit, Task resultTask) throws UniqueTaskList.DuplicateTaskException {
+		undoTaskStack.pushEditToUndoStack(UNDO_EDIT_COMMAND, taskToEdit, taskIndex);
+
+		try {
+			tasks.edit(taskIndex, resultTask);
+		} catch (TaskNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -249,7 +240,31 @@ public class TaskBook implements ReadOnlyTaskBook {
 		List<Task> clearedTasks = new ArrayList<Task>();
 		List<Integer> clearedTasksIndices = new ArrayList<Integer>();
 		
-		//compile set of tasks and indices being cleared to prepare for undo stack
+		prepareCompletedTasksForUndo(copyTasks, clearedTasks, clearedTasksIndices);
+		
+		//actually remove the completed tasks
+		for (Task readTask : copyTasks) {
+			if (readTask.isComplete()) {
+				try {			
+					tasks.remove(readTask);
+				} catch (TaskNotFoundException e) {
+					assert false : "The target task cannot be missing";
+				}
+			}
+		}
+		if (copyTasks.size() == tasks.size()) {
+			throw new NoCompletedTasksFoundException();
+		}
+		
+		undoTaskStack.pushClearToUndoStack(clearedTasks, clearedTasksIndices, UNDO_CLEAR_COMMAND);
+	}
+
+	/*
+	 * Helper method to compile set of tasks and indices 
+	 * for clearing all completed tasks to prepare for undo stack
+	 */
+	private void prepareCompletedTasksForUndo(UniqueTaskList copyTasks, List<Task> clearedTasks,
+			List<Integer> clearedTasksIndices) {
 		for (Task readTask : copyTasks) {
 			if (readTask.isComplete()) {
 				try {
@@ -273,22 +288,6 @@ public class TaskBook implements ReadOnlyTaskBook {
 				}
 			}
 		}
-		
-		//actually remove the completed tasks
-		for (Task readTask : copyTasks) {
-			if (readTask.isComplete()) {
-				try {			
-					tasks.remove(readTask);
-				} catch (TaskNotFoundException e) {
-					assert false : "The target task cannot be missing";
-				}
-			}
-		}
-		if (copyTasks.size() == tasks.size()) {
-			throw new NoCompletedTasksFoundException();
-		}
-		
-		undoTaskStack.pushClearToUndoStack(clearedTasks, clearedTasksIndices, UNDO_CLEAR_COMMAND);
 	}
 	
 	/**
@@ -300,6 +299,26 @@ public class TaskBook implements ReadOnlyTaskBook {
 		List<Integer> clearedTasksIndices = new ArrayList<Integer>();
 		List<String> clearedStatus = new ArrayList<String>();
 		
+		prepareClearedTasksForUndo(copyTasks, clearedTasks, clearedTasksIndices, clearedStatus);
+		
+		//actually remove the completed tasks
+		for (Task readTask : copyTasks) {
+			try {			
+				tasks.remove(readTask);
+			} catch (TaskNotFoundException e) {
+				assert false : "The target task cannot be missing";
+			}
+		}
+		
+		undoTaskStack.pushClearAllToUndoStack(clearedTasks, clearedTasksIndices, clearedStatus, UNDO_CLEAR_ALL_COMMAND);
+	}
+
+	/*
+	 * Helper method to compile set of tasks and indices 
+	 * for clearing all tasks to prepare for undo stack
+	 */
+	private void prepareClearedTasksForUndo(UniqueTaskList copyTasks, List<Task> clearedTasks,
+			List<Integer> clearedTasksIndices, List<String> clearedStatus) {
 		//compile set of tasks and indices being cleared to prepare for undo stack
 		for (Task readTask : copyTasks) {
 			try {
@@ -324,17 +343,6 @@ public class TaskBook implements ReadOnlyTaskBook {
 				assert false : "The target task cannot be missing";
 			}
 		}
-		
-		//actually remove the completed tasks
-		for (Task readTask : copyTasks) {
-			try {			
-				tasks.remove(readTask);
-			} catch (TaskNotFoundException e) {
-				assert false : "The target task cannot be missing";
-			}
-		}
-		
-		undoTaskStack.pushClearAllToUndoStack(clearedTasks, clearedTasksIndices, clearedStatus, UNDO_CLEAR_ALL_COMMAND);
 	}
 
 	public void undoTask() {
