@@ -104,6 +104,13 @@ public class ModelManager extends ComponentManager implements Model {
         updateFilteredListByStatus(Status.STATUS_PENDING);
         indicateTaskBookChanged();
     }
+    
+    @Override
+    public synchronized void editTask(int taskIndex, Task taskToEdit, Task resultTask) throws UniqueTaskList.DuplicateTaskException {
+        taskBook.editTask(taskIndex, taskToEdit, resultTask);
+        indicateTaskBookChanged();
+    }
+    
     //@@author A0138704E
 	@Override
     public void completeTask(ReadOnlyTask target) throws TaskNotFoundException, TaskAlreadyCompletedException {

@@ -34,12 +34,11 @@ public class UndoTaskStack {
 	 * 
 	 * @params callingCommand, addedTask
 	 * 
-	 * callingCommand will be "add"
+	 * callingCommand will be "add" or "edit add"
 	 * addedTask is the task added
-	 * actionIndex will be -1; there is no index specified when adding a task,
-	 * 			just pushing to keep the stacks balanced
+	 * targetIndex holds the index specified by the user that they added 
 	 **/
-	public void pushAddToUndoStack(String callingCommand, Task addedTask){
+	public void pushAddToUndoStack(String callingCommand, Task addedTask, int targetIndex){
 		previousActionType.push(callingCommand);
 		previousActionIndex.push(-1);
 		previousTask.push(addedTask);
@@ -71,6 +70,21 @@ public class UndoTaskStack {
 			Task deleted = new Task(key.getName());
 			previousTask.push(deleted);
 		}
+	}
+	
+	/**
+	 * Pushes the edit command to the undo stack.
+	 * 
+	 * @params callingCommand, taskToEdit
+	 * 
+	 * callingCommand will be "edit"
+	 * taskToEdit is the task before it is edited
+	 * targetIndex holds the index of the task about to be edited
+	 **/
+	public void pushEditToUndoStack(String callingCommand, Task taskToEdit, int targetIndex){
+		previousActionType.push(callingCommand);
+		previousActionIndex.push(targetIndex);
+		previousTask.push(taskToEdit);
 	}
 	
 	/**
@@ -128,7 +142,7 @@ public class UndoTaskStack {
 	 * 			just pushing to keep the stacks balanced
 	 **/
 	public void pushClearAllToUndoStack(List<Task> clearedTasks, List<Integer> clearedTaskIndices, 
-			List<String>clearedStatus, String callingCommand) {
+		List<String>clearedStatus, String callingCommand) {
 		previousActionType.push(callingCommand);
 		previousActionIndex.push(-1);
 		
@@ -151,7 +165,6 @@ public class UndoTaskStack {
 			Task userTask = previousTask.pop();
 			String userAction = previousActionType.pop();
 			int taskIndex = previousActionIndex.pop();
-
 			
 			switch (userAction) {
 			// previous action was an add; delete the added task
@@ -172,13 +185,12 @@ public class UndoTaskStack {
 					e.printStackTrace();
 				}
 				break;
-			// previous action was an edit; delete edited task and add back old task
+			// previous action was an edit; set back the old task
 			case "edit":
 				try {
-					tasks.remove(userTask);
-					tasks.add(taskIndex, userTask);
-					previousActionUndoString = userAction + " " + (taskIndex + 1);
-				} catch (DuplicateTaskException | TaskNotFoundException e) {
+					tasks.edit(taskIndex, userTask);
+					previousActionUndoString = "edit" + " " + (taskIndex + 1) + " " + userTask.toString();
+				} catch (TaskNotFoundException e) {
 					e.printStackTrace();
 				}
 				break;

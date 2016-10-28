@@ -110,7 +110,7 @@ public class TaskBook implements ReadOnlyTaskBook {
 	 */
 	public void addTask(Task task) throws UniqueTaskList.DuplicateTaskException {
 		tasks.add(task);
-		undoTaskStack.pushAddToUndoStack(UNDO_ADD_COMMAND, task);
+		undoTaskStack.pushAddToUndoStack(UNDO_ADD_COMMAND, task, -1);
 	}
 
 	/**
@@ -131,6 +131,22 @@ public class TaskBook implements ReadOnlyTaskBook {
 			return true;
 		} else {
 			throw new TaskNotFoundException();
+		}
+	}
+	
+	/**
+	 * Edits a task to the task at a given index. 
+	 *
+	 * @throws UniqueTaskList.DuplicateTaskException
+	 *             if an equivalent task already exists.
+	 */
+	public void editTask(int taskIndex, Task taskToEdit, Task resultTask) throws UniqueTaskList.DuplicateTaskException {
+		undoTaskStack.pushEditToUndoStack(UNDO_EDIT_COMMAND, taskToEdit, taskIndex);
+
+		try {
+			tasks.edit(taskIndex, resultTask);
+		} catch (TaskNotFoundException e) {
+			e.printStackTrace();
 		}
 	}
 	
@@ -172,7 +188,31 @@ public class TaskBook implements ReadOnlyTaskBook {
 		List<Task> clearedTasks = new ArrayList<Task>();
 		List<Integer> clearedTasksIndices = new ArrayList<Integer>();
 		
-		//compile set of tasks and indices being cleared to prepare for undo stack
+		prepareCompletedTasksForUndo(copyTasks, clearedTasks, clearedTasksIndices);
+		
+		//actually remove the completed tasks
+		for (Task readTask : copyTasks) {
+			if (readTask.isComplete()) {
+				try {			
+					tasks.remove(readTask);
+				} catch (TaskNotFoundException e) {
+					assert false : "The target task cannot be missing";
+				}
+			}
+		}
+		if (copyTasks.size() == tasks.size()) {
+			throw new NoCompletedTasksFoundException();
+		}
+		
+		undoTaskStack.pushClearToUndoStack(clearedTasks, clearedTasksIndices, UNDO_CLEAR_COMMAND);
+	}
+
+	/*
+	 * Helper method to compile set of tasks and indices 
+	 * for clearing all completed tasks to prepare for undo stack
+	 */
+	private void prepareCompletedTasksForUndo(UniqueTaskList copyTasks, List<Task> clearedTasks,
+			List<Integer> clearedTasksIndices) {
 		for (Task readTask : copyTasks) {
 			if (readTask.isComplete()) {
 				try {
@@ -196,22 +236,6 @@ public class TaskBook implements ReadOnlyTaskBook {
 				}
 			}
 		}
-		
-		//actually remove the completed tasks
-		for (Task readTask : copyTasks) {
-			if (readTask.isComplete()) {
-				try {			
-					tasks.remove(readTask);
-				} catch (TaskNotFoundException e) {
-					assert false : "The target task cannot be missing";
-				}
-			}
-		}
-		if (copyTasks.size() == tasks.size()) {
-			throw new NoCompletedTasksFoundException();
-		}
-		
-		undoTaskStack.pushClearToUndoStack(clearedTasks, clearedTasksIndices, UNDO_CLEAR_COMMAND);
 	}
 	
 	/**
@@ -223,6 +247,26 @@ public class TaskBook implements ReadOnlyTaskBook {
 		List<Integer> clearedTasksIndices = new ArrayList<Integer>();
 		List<String> clearedStatus = new ArrayList<String>();
 		
+		prepareClearedTasksForUndo(copyTasks, clearedTasks, clearedTasksIndices, clearedStatus);
+		
+		//actually remove the completed tasks
+		for (Task readTask : copyTasks) {
+			try {			
+				tasks.remove(readTask);
+			} catch (TaskNotFoundException e) {
+				assert false : "The target task cannot be missing";
+			}
+		}
+		
+		undoTaskStack.pushClearAllToUndoStack(clearedTasks, clearedTasksIndices, clearedStatus, UNDO_CLEAR_ALL_COMMAND);
+	}
+
+	/*
+	 * Helper method to compile set of tasks and indices 
+	 * for clearing all tasks to prepare for undo stack
+	 */
+	private void prepareClearedTasksForUndo(UniqueTaskList copyTasks, List<Task> clearedTasks,
+			List<Integer> clearedTasksIndices, List<String> clearedStatus) {
 		//compile set of tasks and indices being cleared to prepare for undo stack
 		for (Task readTask : copyTasks) {
 			try {
@@ -247,17 +291,6 @@ public class TaskBook implements ReadOnlyTaskBook {
 				assert false : "The target task cannot be missing";
 			}
 		}
-		
-		//actually remove the completed tasks
-		for (Task readTask : copyTasks) {
-			try {			
-				tasks.remove(readTask);
-			} catch (TaskNotFoundException e) {
-				assert false : "The target task cannot be missing";
-			}
-		}
-		
-		undoTaskStack.pushClearAllToUndoStack(clearedTasks, clearedTasksIndices, clearedStatus, UNDO_CLEAR_ALL_COMMAND);
 	}
 
 	public void undoTask() {
