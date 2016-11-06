@@ -28,7 +28,6 @@ public class TestTask implements ReadOnlyTask {
     public void setEndDate(TaskDate date) {
         this.endDate = date;
     }
-    // @@author
 
     @Override
     public Name getName() {
@@ -43,9 +42,23 @@ public class TestTask implements ReadOnlyTask {
     public String getAddCommand() {
         StringBuilder sb = new StringBuilder();
         sb.append("add \"" + this.getName().fullName + "\" ");
-        if (endDate != null) {
-            sb.append(endDate.toString() + " ");
+        boolean hasStart = startDate != null;
+        boolean hasEnd = endDate != null;
+        
+        if (hasStart && hasEnd) {
+            sb.append(" on ");
+            sb.append(startDate.toString() + " ");
+            sb.append(" to ");
+            sb.append(endDate.toString());
+        } else if (hasStart || hasEnd) {
+            sb.append(" on ");
+            if (hasStart) {
+                sb.append(startDate.toString());
+            } else {
+                sb.append(endDate.toString());
+            }
         }
+        
         return sb.toString();
     }
 

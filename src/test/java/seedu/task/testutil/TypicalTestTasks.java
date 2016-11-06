@@ -19,8 +19,14 @@ public class TypicalTestTasks {
             test = new TaskBuilder().withName("driving test").build();
             exam = new TaskBuilder().withName("programming exam").build();
             project = new TaskBuilder().withName("software engineering project assignment").build();
-            movie = new TaskBuilder().withName("watch The Accountant").build();
-            discussion = new TaskBuilder().withName("group discussion").build();
+            movie = new TaskBuilder()
+                    .withName("watch The Accountant")
+                    .withEndDate(new TaskDate("Aug 2nd 2015"))
+                    .build();
+            discussion = new TaskBuilder()
+                    .withName("group discussion")
+                    .withDates(new TaskDate("February 2nd 2020"), new TaskDate("25th December 2023"))
+                    .build();
 
             //Manually added
             report = new TaskBuilder().withName("write report").build();
