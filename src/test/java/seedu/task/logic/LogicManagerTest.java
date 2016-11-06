@@ -263,6 +263,24 @@ public class LogicManagerTest {
                 expectedAB.getTaskList());
 
     }
+    
+    @Test
+    public void execute_editFloatingTask_successful() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeEdited = helper.floatTask();
+        Task afterEdit = helper.generateTaskWithName("I have a new name");
+        TaskBook expectedAB = new TaskBook();
+        expectedAB.addTask(afterEdit);
+        model.addTask(toBeEdited);
+
+        // execute command and verify result
+        assertCommandBehavior("edit 1 \"I have a new name\"",
+                String.format(EditCommand.MESSAGE_EDIT_TASK_SUCCESS, afterEdit),
+                expectedAB,
+                expectedAB.getTaskList());
+
+    }
 
     @Test
     public void execute_listAll_showsAllTasks() throws Exception {

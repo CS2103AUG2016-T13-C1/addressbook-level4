@@ -14,11 +14,6 @@ public class StoreCommandTest extends TaskBookGuiTest{
 		assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, StoreCommand.MESSAGE_USAGE));
 	}
 	
-	@Test
-	public void store_validPath() {
-	    
-	}
-
 	private void assertStoreSuccess(String command, String expectedMessage) {
 		commandBox.runCommand(command);
 		assertResultMessage(expectedMessage);
