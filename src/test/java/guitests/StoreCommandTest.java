@@ -1,3 +1,4 @@
+//@@author A0153723J
 package guitests;
 
 import org.junit.Test;
@@ -14,8 +15,12 @@ public class StoreCommandTest extends TaskBookGuiTest{
 		assertResultMessage(String.format(MESSAGE_INVALID_COMMAND_FORMAT, StoreCommand.MESSAGE_USAGE));
 	}
 	
-	private void assertStoreSuccess(String command, String expectedMessage) {
-		commandBox.runCommand(command);
-		assertResultMessage(expectedMessage);
+	@Test
+	public void store_validPath() {
+	    String newSaveLocation = "src\\test\\data\\sandbox";
+	    commandBox.runCommand("store " + newSaveLocation);
+	    newSaveLocation += "\\taskbook.xml";
+	    assertResultMessage(String.format(StoreCommand.MESSAGE_SUCCESS, newSaveLocation));
 	}
+	
 }
