@@ -76,6 +76,6 @@ public class CompleteCommandTest extends TaskBookGuiTest {
         assertTrue(taskListPanel.isListMatching(currentList));
 
         //confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_COMPLETE_TASK_SUCCESS, taskToComplete));
+        assertResultMessage(String.format(MESSAGE_COMPLETE_TASK_SUCCESS, taskToComplete.toString()));
     }
 }

@@ -37,7 +37,23 @@ public class TestTask implements ReadOnlyTask {
 
     @Override
     public String toString() {
-        return getAsText();
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getName().fullName);
+        boolean hasStart = startDate != null;
+        boolean hasEnd = endDate != null;
+
+        if (hasStart && hasEnd) {
+            sb.append(" start from ");
+            sb.append(startDate.toString());
+            sb.append(" to ");
+            sb.append(endDate.toString());
+        } else if (hasEnd) {
+            sb.append(" due on ");
+            sb.append(endDate.toString());
+        } else {
+            // do nothing here
+        }
+        return sb.toString();
     }
 
     //@@author A0161247J

@@ -1,7 +1,6 @@
 package seedu.task.testutil;
 
 import seedu.task.commons.exceptions.IllegalValueException;
-import seedu.task.commons.util.DateUtil;
 import seedu.task.model.TaskBook;
 import seedu.task.model.task.*;
 import seedu.task.model.task.UniqueTaskList.DuplicateTaskException;
@@ -15,24 +14,37 @@ public class TypicalTestTasks {
 
     public TypicalTestTasks() {
         try {
-            assignment =  new TaskBuilder().withName("assignment").build();
-            meeting = new TaskBuilder().withName("meeting with John").build();
-            test = new TaskBuilder().withName("driving test").build();
-            exam = new TaskBuilder().withName("programming exam").build();
-            project = new TaskBuilder().withName("software engineering project assignment").build();
+            assignment =  new TaskBuilder()
+                    .withName("assignment")
+                    .build();
+            meeting = new TaskBuilder()
+                    .withName("meeting with John")
+                    .build();
+            test = new TaskBuilder()
+                    .withName("driving test")
+                    .build();
+            exam = new TaskBuilder()
+                    .withName("programming exam")
+                    .build();
+            project = new TaskBuilder()
+                    .withName("software engineering project assignment")
+                    .build();
             movie = new TaskBuilder()
                     .withName("watch The Accountant")
-                    .withEndDate(new TaskDate(DateUtil.parseStringToLocalDateTime("2 Aug 2015 14:00")))
+                    .withEndDate(new TaskDate("2 Aug 2015 14:00"))
                     .build();
             discussion = new TaskBuilder()
                     .withName("group discussion")
-                    .withDates(new TaskDate(DateUtil.parseStringToLocalDateTime("2 Feb 2020 14:00")), 
-                            new TaskDate(DateUtil.parseStringToLocalDateTime("25 Dec 2023 14:00")))
+                    .withDates(new TaskDate("2 Feb 2020 14:00"), new TaskDate("25 Dec 2023 14:00"))
                     .build();
 
             //Manually added
-            report = new TaskBuilder().withName("write report").build();
-            powerpoint = new TaskBuilder().withName("create powerpoint for project").build();
+            report = new TaskBuilder()
+                    .withName("write report")
+                    .build();
+            powerpoint = new TaskBuilder()
+                    .withName("create powerpoint for project")
+                    .build();
         } catch (IllegalValueException e) {
             e.printStackTrace();
             assert false : "not possible";
@@ -55,7 +67,7 @@ public class TypicalTestTasks {
     }
 
     public TestTask[] getTypicalTasks() {
-        return new TestTask[]{assignment, meeting, test, exam, project, movie, discussion};
+        return new TestTask[] { assignment, meeting, test, exam, project, movie, discussion };
     }
 
     public TaskBook getTypicalTaskBook(){
