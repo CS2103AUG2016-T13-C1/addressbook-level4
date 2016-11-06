@@ -137,6 +137,7 @@ public class LogicManagerTest {
         assertCommandBehavior("exit", ExitCommand.MESSAGE_EXIT_ACKNOWLEDGEMENT);
     }
 
+    //@@author A0138704E
     @Test
     public void execute_clearCompleted_haveCompletedTasks() throws Exception {
         // setup expectations
@@ -212,7 +213,7 @@ public class LogicManagerTest {
                 expectedAB.getTaskList());
 
     }
-
+    //@@author 
     @Test
     public void execute_addDuplicate_notAllowed() throws Exception {
         // setup expectations
@@ -231,7 +232,7 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedAB.getTaskList());
     }
-    
+    //@@author A0138704E
     @Test
     public void execute_addDeadline_successful() throws Exception {
         // setup expectations
@@ -297,7 +298,7 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedList);
     }
-
+    //@@author A0138704E
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single task in the shown list, using visible index.

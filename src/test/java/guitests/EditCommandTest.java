@@ -30,7 +30,8 @@ public class EditCommandTest extends TaskBookGuiTest {
         LocalDateTime endDate = DateUtil.parseStringToLocalDateTime("10 Oct 2016 15:30");
         newTask.setName(new Name(td.assignment.toString()));
         newTask.setEndDate(new TaskDate(endDate));
-        assertEditDeadlineSuccess(currentList, targetIndex, newTask);
+        commandBox.runCommand("edit " + targetIndex + " " + newTask.getEnd());
+        assertEditSuccess(currentList, targetIndex, newTask);
         
         // edit floating task to event task
         targetIndex = 2;
@@ -41,7 +42,8 @@ public class EditCommandTest extends TaskBookGuiTest {
         newTask.setName(new Name(td.meeting.toString()));
         newTask.setStartDate(new TaskDate(startDate));
         newTask.setEndDate(new TaskDate(endDate));
-        assertEditEventSuccess(currentList, targetIndex, newTask);
+        commandBox.runCommand("edit " + targetIndex + " oct 10 3.30pm to oct 20 3.30pm");
+        assertEditSuccess(currentList, targetIndex, newTask);
         
         // edit invalid task index
         commandBox.runCommand("edit " + (currentList.length + 1) + " " + newTask.getEnd());
@@ -49,26 +51,11 @@ public class EditCommandTest extends TaskBookGuiTest {
     }
 
     /**
-     * Runs edit command to edit a given task to a deadline task
+     * Checks if the edit command displays the correct result message
      */
-    private void assertEditDeadlineSuccess(TestTask[] currentList, int targetIndex, TestTask newTask) {
+    private void assertEditSuccess(TestTask[] currentList, int targetIndex, TestTask newTask) {
         TestUtil.replaceTaskFromList(currentList, newTask, targetIndex - 1);
-        // run edit command
-        commandBox.runCommand("edit " + targetIndex + " " + newTask.getEnd());
-        // confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_EDIT_TASK_SUCCESS, newTask + " due " + newTask.getEnd()));
-    }
-
-    /**
-     * Runs edit command to edit a given task to an event task
-     */
-    private void assertEditEventSuccess(TestTask[] currentList, int targetIndex, TestTask newTask) {
-        TestUtil.replaceTaskFromList(currentList, newTask, targetIndex - 1);
-        // run edit command
-        commandBox.runCommand("edit " + targetIndex + " oct 10 3.30pm to oct 20 3.30pm");
-        // confirm the result message is correct
-        assertResultMessage(String.format(MESSAGE_EDIT_TASK_SUCCESS,
-                newTask + " start from " + newTask.getStart() + " to " + newTask.getEnd()));
+        assertResultMessage(String.format(MESSAGE_EDIT_TASK_SUCCESS, newTask));
     }
 
 }

@@ -48,7 +48,7 @@ public class TestTask implements ReadOnlyTask {
             sb.append(" to ");
             sb.append(endDate.toString());
         } else if (hasEnd) {
-            sb.append(" due on ");
+            sb.append(" due ");
             sb.append(endDate.toString());
         } else {
             // do nothing here
