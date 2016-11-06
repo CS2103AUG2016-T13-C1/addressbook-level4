@@ -3,8 +3,14 @@ package seedu.task.commons.util;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import com.joestelmach.natty.DateGroup;
 
 import seedu.task.model.task.TaskDate;
 
@@ -14,15 +20,33 @@ import seedu.task.model.task.TaskDate;
  */
 public class DateUtil {
     
+    public static final DateTimeFormatter localDateReadableFormatter = DateTimeFormatter.ofPattern("d MMM yyyy");
+    public static final DateTimeFormatter localTimeReadableFormatter = DateTimeFormatter.ofPattern("HH:mm");
     public static final DateTimeFormatter localDateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
     public static final DateTimeFormatter localDateFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    //@@author A0161247J
+    private static final com.joestelmach.natty.Parser parser = new com.joestelmach.natty.Parser();
+    
+    //@@author A0161247J
+    public static boolean isValidDate(String date) {
+        try {
+            parseStringToLocalDateTime(date);
+            return true;
+        } catch (DateTimeParseException e) {
+            return false;
+        }
+    }
+    
+    
     
 	/**
      * Parses a String into a LocalDateTime
      * @throws ParseException
+     * @throws IndexOutOfBoundsException
      */
-    public static LocalDateTime parseStringToLocalDateTime(String strDate) throws DateTimeParseException {
-    	return LocalDateTime.parse(strDate, localDateTimeFormatter);
+    //@@author A0161247J
+    public static LocalDateTime parseStringToLocalDateTime(String strDate) throws DateTimeParseException, IndexOutOfBoundsException {
+    	return parseDateString(strDate).get(0);
     }
     
     /**
@@ -47,6 +71,13 @@ public class DateUtil {
      */
     public static String formatLocalDateTimeToString(LocalDateTime date) {
         return date.format(localDateTimeFormatter);
+    }
+    
+    public static String formatLocalDateTimeToReadableString(LocalDateTime date) {
+        String dateString = date.format(localDateReadableFormatter);
+        String timeString = date.format(localTimeReadableFormatter);
+
+        return String.format("%s at %s", dateString, timeString);
     }
     
     /**
@@ -105,4 +136,33 @@ public class DateUtil {
         return today;
     }
 
+    /**
+     * Retrieves task dates from string using the Natty parser
+     */
+    //@@author A0161247J
+    private static List<LocalDateTime> parseDateString(String args) throws DateTimeParseException {
+        List<DateGroup> dateGroups = parser.parse(args);
+        if (dateGroups.size() == 0) {
+            throw new DateTimeParseException("Could not parse the string", args, 0);
+        }
+        
+        DateGroup group = dateGroups.get(0);
+        return extractLocalDates(group);
+    }
+    
+    /**
+     * Extracts the local dates as a list of LocalDateTime from a given DateGroup object
+     */
+    //@@author A0161247J
+    private static List<LocalDateTime> extractLocalDates(DateGroup dateGroup) {
+        List<Date> dates = dateGroup.getDates();
+        
+        List<LocalDateTime> localDates = new ArrayList<>();
+        for (Date date : dates) {
+            LocalDateTime local = LocalDateTime
+                    .ofInstant(date.toInstant(), ZoneId.systemDefault());
+            localDates.add(local);
+        }
+        return localDates;
+    }
 }

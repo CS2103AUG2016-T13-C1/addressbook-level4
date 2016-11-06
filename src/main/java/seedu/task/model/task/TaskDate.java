@@ -12,9 +12,7 @@ import seedu.task.commons.util.DateUtil;
  */
 public class TaskDate implements Comparable<TaskDate> {
 
-    public static final String MESSAGE_DATE_CONSTRAINTS = "Task date should be specified in following format"
-    		+ " 06-10-2016 14:00";
-    public static final String DATE_VALIDATION_REGEX = "\\d{2}-\\d{2}-\\d{4}\\s\\d{2}:\\d{2}";
+    public static final String MESSAGE_DATE_CONSTRAINTS = "Task date is invalid";
 
     public final LocalDateTime taskDate;
 
@@ -31,18 +29,10 @@ public class TaskDate implements Comparable<TaskDate> {
      */
     public TaskDate(String strDateTime) throws IllegalValueException {
         strDateTime = strDateTime.trim();
-        if (!isValidDate(strDateTime)) {
-            throw new IllegalValueException(MESSAGE_DATE_CONSTRAINTS);
-        }
+        DateUtil.isValidDate(strDateTime);
         this.taskDate = DateUtil.parseStringToLocalDateTime(strDateTime);
     }
     
-    /**
-     * Returns true if a given string is a valid task date.
-     */
-    public static boolean isValidDate(String test) {
-        return test.matches(DATE_VALIDATION_REGEX);
-    }
     
     public LocalDateTime getTaskDate() {
         return taskDate;
@@ -50,7 +40,7 @@ public class TaskDate implements Comparable<TaskDate> {
     
     @Override
     public String toString() {
-        return DateUtil.formatLocalDateTimeToString(taskDate);
+        return DateUtil.formatLocalDateTimeToReadableString(taskDate);
     }
 
     @Override

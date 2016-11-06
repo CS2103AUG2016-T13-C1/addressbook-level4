@@ -17,6 +17,7 @@ import seedu.task.testutil.TestUtil;
 import seedu.task.testutil.TypicalTestTasks;
 
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -114,5 +115,12 @@ public abstract class TaskBookGuiTest {
      */
     protected void assertResultMessage(String expected) {
         assertEquals(expected, resultDisplay.getText());
+    }
+    
+    protected void assertResultMessageAlmost(String pattern) {
+        String actual = resultDisplay.getText();
+        boolean matches = Pattern.matches(pattern, actual);
+        String message = String.format("was [%s] instead of [%s]", actual, pattern);
+        assertTrue(message, matches);
     }
 }
