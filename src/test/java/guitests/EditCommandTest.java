@@ -27,7 +27,7 @@ public class EditCommandTest extends TaskBookGuiTest {
         int targetIndex = 1;
         // create new deadline task
         TestTask newTask = new TestTask();
-        LocalDateTime endDate = DateUtil.parseStringToLocalDateTime("10-10-2016 15:30");
+        LocalDateTime endDate = DateUtil.parseStringToLocalDateTime("10 Oct 2016 15:30");
         newTask.setName(new Name(td.assignment.toString()));
         newTask.setEndDate(new TaskDate(endDate));
         assertEditDeadlineSuccess(currentList, targetIndex, newTask);
@@ -36,8 +36,8 @@ public class EditCommandTest extends TaskBookGuiTest {
         targetIndex = 2;
         // create new event task
         newTask = new TestTask();
-        LocalDateTime startDate = DateUtil.parseStringToLocalDateTime("10-10-2016 15:30");
-        endDate = DateUtil.parseStringToLocalDateTime("20-10-2016 15:30");
+        LocalDateTime startDate = DateUtil.parseStringToLocalDateTime("10 Oct 2016 15:30");
+        endDate = DateUtil.parseStringToLocalDateTime("20 Oct 2016 15:30");
         newTask.setName(new Name(td.meeting.toString()));
         newTask.setStartDate(new TaskDate(startDate));
         newTask.setEndDate(new TaskDate(endDate));

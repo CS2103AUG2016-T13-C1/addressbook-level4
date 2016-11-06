@@ -1,6 +1,7 @@
 package seedu.task.testutil;
 
 import seedu.task.commons.exceptions.IllegalValueException;
+import seedu.task.commons.util.DateUtil;
 import seedu.task.model.TaskBook;
 import seedu.task.model.task.*;
 import seedu.task.model.task.UniqueTaskList.DuplicateTaskException;
@@ -19,8 +20,15 @@ public class TypicalTestTasks {
             test = new TaskBuilder().withName("driving test").build();
             exam = new TaskBuilder().withName("programming exam").build();
             project = new TaskBuilder().withName("software engineering project assignment").build();
-            movie = new TaskBuilder().withName("watch The Accountant").build();
-            discussion = new TaskBuilder().withName("group discussion").build();
+            movie = new TaskBuilder()
+                    .withName("watch The Accountant")
+                    .withEndDate(new TaskDate(DateUtil.parseStringToLocalDateTime("2 Aug 2015 14:00")))
+                    .build();
+            discussion = new TaskBuilder()
+                    .withName("group discussion")
+                    .withDates(new TaskDate(DateUtil.parseStringToLocalDateTime("2 Feb 2020 14:00")), 
+                            new TaskDate(DateUtil.parseStringToLocalDateTime("25 Dec 2023 14:00")))
+                    .build();
 
             //Manually added
             report = new TaskBuilder().withName("write report").build();
@@ -39,8 +47,8 @@ public class TypicalTestTasks {
             ab.addTask(new Task(test));
             ab.addTask(new Task(exam));
             ab.addTask(new Task(project));
-            ab.addTask(new Task(movie));
-            ab.addTask(new Task(discussion));
+            ab.addTask(new DeadlineTask(movie.getName(), movie.getEnd()));
+            ab.addTask(new EventTask(discussion.getName(), discussion.getStart(), discussion.getEnd()));
         } catch (DuplicateTaskException e) {
             assert false : "not possible";
         }

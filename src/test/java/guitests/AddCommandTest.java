@@ -10,9 +10,12 @@ import seedu.task.testutil.TestUtil;
 
 import static org.junit.Assert.assertTrue;
 
-public class AddCommandTest extends TaskBookGuiTest {
+import java.time.LocalDateTime;
 
+public class AddCommandTest extends TaskBookGuiTest {
+    
     @Test
+    //@@author A0161247J
     public void add() {
         //add one task
         TestTask[] currentList = td.getTypicalTasks();
@@ -32,11 +35,21 @@ public class AddCommandTest extends TaskBookGuiTest {
 
         //add to empty list
         commandBox.runCommand("clear /a");
+        
         assertAddSuccess(td.assignment);
 
         //invalid command
         commandBox.runCommand("adds Johnny");
         assertResultMessage(Messages.MESSAGE_UNKNOWN_COMMAND);
+        
+        int hours = LocalDateTime.now().getHour();
+
+        commandBox.runCommand(td.movie.getAddCommand());
+        assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS, td.movie));
+        
+
+        commandBox.runCommand(td.discussion.getAddCommand());
+        assertResultMessage(String.format(AddCommand.MESSAGE_SUCCESS, td.discussion));
     }
 
     private void assertAddSuccess(TestTask taskToAdd, TestTask... currentList) {
