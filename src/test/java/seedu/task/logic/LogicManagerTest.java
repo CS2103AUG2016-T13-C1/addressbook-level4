@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import seedu.task.commons.core.EventsCenter;
+import seedu.task.commons.core.Messages;
 import seedu.task.commons.events.model.TaskBookChangedEvent;
 import seedu.task.commons.events.ui.JumpToListRequestEvent;
 import seedu.task.commons.events.ui.ShowHelpRequestEvent;
@@ -246,7 +247,6 @@ public class LogicManagerTest {
                 String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedAB,
                 expectedAB.getTaskList());
-
     }
     
     @Test
@@ -262,7 +262,6 @@ public class LogicManagerTest {
                 String.format(AddCommand.MESSAGE_SUCCESS, toBeAdded),
                 expectedAB,
                 expectedAB.getTaskList());
-
     }
     
     @Test
@@ -280,9 +279,40 @@ public class LogicManagerTest {
                 String.format(EditCommand.MESSAGE_EDIT_TASK_SUCCESS, afterEdit),
                 expectedAB,
                 expectedAB.getTaskList());
-
     }
+    
+    @Test
+    public void execute_editInvalidIndex() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeEdited = helper.floatTask();
+        TaskBook expectedAB = new TaskBook();
+        expectedAB.addTask(toBeEdited);
+        model.addTask(toBeEdited);
 
+        // execute command and verify result
+        assertCommandBehavior("edit 100 \"I have a new name\"",
+                Messages.MESSAGE_INVALID_TASK_DISPLAYED_INDEX,
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+    
+    @Test
+    public void execute_editNullName() throws Exception {
+        // setup expectations
+        TestDataHelper helper = new TestDataHelper();
+        Task toBeEdited = helper.floatTask();
+        TaskBook expectedAB = new TaskBook();
+        expectedAB.addTask(toBeEdited);
+        model.addTask(toBeEdited);
+
+        // execute command and verify result
+        assertCommandBehavior("edit 1",
+                String.format(MESSAGE_INVALID_COMMAND_FORMAT, EditCommand.MESSAGE_USAGE),
+                expectedAB,
+                expectedAB.getTaskList());
+    }
+    
     @Test
     public void execute_listAll_showsAllTasks() throws Exception {
         // prepare expectations
@@ -298,7 +328,7 @@ public class LogicManagerTest {
                 expectedAB,
                 expectedList);
     }
-    //@@author A0138704E
+    //@@author
     /**
      * Confirms the 'invalid argument index number behaviour' for the given command
      * targeting a single task in the shown list, using visible index.
@@ -581,25 +611,5 @@ public class LogicManagerTest {
             return task;
         }
         
-        /**
-         * Generates a DeadlineTask with given name due today
-         */
-        Task generateDeadline(String name) throws Exception {
-            Name taskName = new Name(name);
-            TaskDate endDate = new TaskDate(DateUtil.getTodayAsLocalDateTime());
-            Task task = new DeadlineTask(taskName, endDate);
-            return task;
-        }
-        
-        /**
-         * Generates an EventTask with given name from today to tomorrow
-         */
-        Task generateEvent(String name) throws Exception {
-            Name taskName = new Name(name);
-            TaskDate startDate = new TaskDate(DateUtil.getTodayAsLocalDateTime());
-            TaskDate endDate = new TaskDate(DateUtil.getTodayAsLocalDateTime().plusDays(1));
-            Task task = new EventTask(taskName, startDate, endDate);
-            return task;
-        }
     }
 }
